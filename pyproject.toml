@@ -37,4 +37,4 @@ requires = ["poetry-core"]
 build-backend = "poetry.core.masonry.api"
 
 [tool.taskipy.tasks]
-test = "pytest -s -x --cov=src -vv"
+test = "pytest tests/unit -s -x --cov=src -vv"
