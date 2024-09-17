@@ -40,12 +40,12 @@ class Settings(BaseSettings):
     API_KEY: str = secrets.token_urlsafe(32)
     API_KEY_HEADER_NAME: str = "api-key"
 
-    DB_USER: str
-    DB_PASSWORD: str
-    DB_HOST: str
-    DB_PORT: int
-    DB_NAME: str
-    DB_POOL_SIZE: int
+    DB_USER: str = 'my_user'
+    DB_PASSWORD: str = '92673269Gean.'
+    DB_HOST: str = 'localhost'
+    DB_PORT: int = 3306
+    DB_NAME: str = 'task_flow'
+    DB_POOL_SIZE: int = 10
     DB_MAX_OVERFLOW_SIZE: int = 10
     DB_POOL_RECYCLE_TIME: int = 900
 
