@@ -8,7 +8,7 @@ The Task Flow API is designed to manage projects, activities, and customers with
 This API is developed using Python 3.12, FastAPI, SQLAlchemy for ORM, and MySQL for database management. It follows the best practices of clean code and a service-oriented architecture.
 
 ## 2. Entity Relationship Diagram (ERD)
-_Include the EER diagram image here once generated._
+![EER Diagram](doc/EER.png)
 
 ## 3. Project Setup and Local Execution
 
