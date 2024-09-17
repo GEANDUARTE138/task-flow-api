@@ -21,10 +21,8 @@ async def test_create_project(db_session):
     project_mock = MagicMock()
     project_mock.project_key = "project-key"
     project_mock.name = "Project Name"
-    project_mock.status.enumerator = (
-        "open"  
-    )
-    project_mock.due_date = datetime(2024, 2, 1, 0, 0, 0) 
+    project_mock.status.enumerator = "open"
+    project_mock.due_date = datetime(2024, 2, 1, 0, 0, 0)
     project_mock.created_at = datetime(2024, 1, 1, 0, 0, 0)
     project_mock.updated_at = datetime(2024, 1, 1, 0, 0, 0)
     project_repository.create.return_value = project_mock
@@ -183,7 +181,6 @@ async def test_create_project_customer_not_found(db_session):
     project_repository = AsyncMock()
     customer_repository = AsyncMock()
 
-    # Simular que o cliente não foi encontrado
     customer_repository.get_by_key.return_value = None
 
     service = ProjectService(session)
@@ -196,7 +193,6 @@ async def test_create_project_customer_not_found(db_session):
         due_date=datetime(2024, 2, 1),
     )
 
-    # Verificar se uma exceção HTTP 404 é levantada
     with pytest.raises(HTTPException) as excinfo:
         await service.create_project(dto)
 
@@ -214,7 +210,6 @@ async def test_create_project_internal_error(db_session):
     customer_mock = MagicMock()
     customer_repository.get_by_key.return_value = customer_mock
 
-    # Simular um erro ao criar o projeto
     project_repository.create.side_effect = Exception("Database error")
 
     service = ProjectService(session)
@@ -227,7 +222,6 @@ async def test_create_project_internal_error(db_session):
         due_date=datetime(2024, 2, 1),
     )
 
-    # Verificar se uma exceção HTTP 500 é levantada
     with pytest.raises(HTTPException) as excinfo:
         await service.create_project(dto)
 
@@ -244,13 +238,11 @@ async def test_get_project_not_found(db_session):
     session = MagicMock()
     project_repository = AsyncMock()
 
-    # Simular que o projeto não foi encontrado
     project_repository.get_by_key.return_value = None
 
     service = ProjectService(session)
     service.project_repository = project_repository
 
-    # Verificar se uma exceção HTTP 404 é levantada
     with pytest.raises(HTTPException) as excinfo:
         await service.get_project("nonexistent-project-key")
 
@@ -259,19 +251,16 @@ async def test_get_project_not_found(db_session):
     project_repository.get_by_key.assert_called_once_with("nonexistent-project-key")
 
 
-
 @pytest.mark.asyncio
 async def test_get_project_internal_error(db_session):
     session = MagicMock()
     project_repository = AsyncMock()
 
-    # Simular um erro ao buscar o projeto
     project_repository.get_by_key.side_effect = Exception("Database error")
 
     service = ProjectService(session)
     service.project_repository = project_repository
 
-    # Verificar se uma exceção HTTP 500 é levantada
     with pytest.raises(HTTPException) as excinfo:
         await service.get_project("project-key")
 
@@ -285,7 +274,6 @@ async def test_update_project_not_found(db_session):
     session = MagicMock()
     project_repository = AsyncMock()
 
-    # Simular que o projeto não foi encontrado
     project_repository.get_by_key.return_value = None
 
     service = ProjectService(session)
@@ -293,7 +281,6 @@ async def test_update_project_not_found(db_session):
 
     dto = ProjectUpdateDTO(name="Updated Project", status="open")
 
-    # Verificar se uma exceção HTTP 404 é levantada
     with pytest.raises(HTTPException) as excinfo:
         await service.update_project("nonexistent-project-key", dto)
 
@@ -310,7 +297,6 @@ async def test_update_project_internal_error(db_session):
     project_mock = MagicMock()
     project_repository.get_by_key.return_value = project_mock
 
-    # Simular um erro ao atualizar o projeto
     project_repository.update.side_effect = Exception("Database error")
 
     service = ProjectService(session)
@@ -318,7 +304,6 @@ async def test_update_project_internal_error(db_session):
 
     dto = ProjectUpdateDTO(name="Updated Project", status="open")
 
-    # Verificar se uma exceção HTTP 500 é levantada
     with pytest.raises(HTTPException) as excinfo:
         await service.update_project("project-key", dto)
 
@@ -329,12 +314,14 @@ async def test_update_project_internal_error(db_session):
         project_mock, "Updated Project", "open", None
     )
 
+
 from datetime import datetime
 from unittest.mock import AsyncMock, MagicMock
 import pytest
 from services.project import ProjectService
 from schemas.project import ProjectDTO, ProjectUpdateDTO, PaginatedProjectsResponseDTO
 from fastapi import HTTPException
+
 
 @pytest.mark.asyncio
 async def test_create_project_customer_not_found():
@@ -348,15 +335,18 @@ async def test_create_project_customer_not_found():
     service.project_repository = project_repository
     service.customer_repository = customer_repository
 
-    dto = ProjectDTO(name="New Project", customer_key="nonexistent-customer", due_date=datetime.now())
+    dto = ProjectDTO(
+        name="New Project", customer_key="nonexistent-customer", due_date=datetime.now()
+    )
 
     with pytest.raises(HTTPException) as excinfo:
         await service.create_project(dto)
-    
+
     assert excinfo.value.status_code == 404
     assert excinfo.value.detail == "Customer not found"
     customer_repository.get_by_key.assert_called_once_with("nonexistent-customer")
     project_repository.create.assert_not_called()
+
 
 @pytest.mark.asyncio
 async def test_create_project_internal_error():
@@ -373,7 +363,9 @@ async def test_create_project_internal_error():
     service.project_repository = project_repository
     service.customer_repository = customer_repository
 
-    dto = ProjectDTO(name="New Project", customer_key="customer-key", due_date=datetime.now())
+    dto = ProjectDTO(
+        name="New Project", customer_key="customer-key", due_date=datetime.now()
+    )
 
     with pytest.raises(HTTPException) as excinfo:
         await service.create_project(dto)
@@ -429,6 +421,7 @@ async def test_list_projects_by_customer():
         customer_mock.id, "open", datetime(2024, 2, 1, 0, 0, 0), 10, 1
     )
 
+
 @pytest.mark.asyncio
 async def test_update_project_not_found():
     session = MagicMock()
@@ -440,7 +433,9 @@ async def test_update_project_not_found():
     service = ProjectService(session)
     service.project_repository = project_repository
 
-    dto = ProjectUpdateDTO(name="Updated Project", status="closed", due_date=datetime.now())
+    dto = ProjectUpdateDTO(
+        name="Updated Project", status="closed", due_date=datetime.now()
+    )
 
     with pytest.raises(HTTPException) as excinfo:
         await service.update_project("nonexistent-project", dto)
@@ -448,6 +443,7 @@ async def test_update_project_not_found():
     assert excinfo.value.status_code == 404
     assert excinfo.value.detail == "Project not found"
     project_repository.get_by_key.assert_called_once_with("nonexistent-project")
+
 
 @pytest.mark.asyncio
 async def test_update_project_internal_error():
@@ -463,7 +459,9 @@ async def test_update_project_internal_error():
     service = ProjectService(session)
     service.project_repository = project_repository
 
-    dto = ProjectUpdateDTO(name="Updated Project", status="closed", due_date=datetime.now())
+    dto = ProjectUpdateDTO(
+        name="Updated Project", status="closed", due_date=datetime.now()
+    )
 
     with pytest.raises(HTTPException) as excinfo:
         await service.update_project("project-key", dto)
@@ -472,4 +470,3 @@ async def test_update_project_internal_error():
     assert "internal error" in str(excinfo.value.detail).lower()
     project_repository.get_by_key.assert_called_once_with("project-key")
     project_repository.update.assert_called_once()
-
