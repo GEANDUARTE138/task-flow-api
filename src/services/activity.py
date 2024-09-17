@@ -81,6 +81,8 @@ class ActivityService(BaseService):
 
             return response_data
 
+        except HTTPException as http_exc:
+            raise http_exc
         except Exception as e:
             self.logger.error("An error occurred in create_activity", {"error": str(e)})
             raise HTTPException(
@@ -124,7 +126,9 @@ class ActivityService(BaseService):
             self.logger.info(f"get_activity successfully retrieved activity_key: {activity_key}")
 
             return response_data
-        
+    
+        except HTTPException as http_exc:
+            raise http_exc
         except Exception as e:
             self.logger.error("An error occurred in get_activity", {"error": str(e)})
             raise HTTPException(
@@ -178,6 +182,9 @@ class ActivityService(BaseService):
 
             return response_data
 
+    
+        except HTTPException as http_exc:
+            raise http_exc
         except Exception as e:
             self.logger.error("An error occurred in update_activity", {"error": str(e)})
             raise HTTPException(

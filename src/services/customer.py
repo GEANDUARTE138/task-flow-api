@@ -64,6 +64,8 @@ class CustomerService(BaseService):
 
             return response_data
 
+        except HTTPException as http_exc:
+            raise http_exc
         except Exception as e:
             self.logger.error("An error occurred in create_customer", {"error": str(e)})
             raise HTTPException(
@@ -107,6 +109,8 @@ class CustomerService(BaseService):
 
             return response_data
 
+        except HTTPException as http_exc:
+            raise http_exc
         except Exception as e:
             self.logger.error("An error occurred in get_customer", {"error": str(e)})
             raise HTTPException(
@@ -159,6 +163,8 @@ class CustomerService(BaseService):
 
             return response_data
 
+        except HTTPException as http_exc:
+            raise http_exc
         except Exception as e:
             self.logger.error("An error occurred in update_customer", {"error": str(e)})
             raise HTTPException(

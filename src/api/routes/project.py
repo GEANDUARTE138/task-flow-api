@@ -27,7 +27,7 @@ router = APIRouter()
 
 @router.post(
     "/project",
-    status_code=200,
+    status_code=201,
     response_model=ProjectResponseDTO,
     dependencies=[Depends(get_api_key)],
 )

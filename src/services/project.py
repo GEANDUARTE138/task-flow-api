@@ -9,7 +9,7 @@ Classes:
 from datetime import datetime
 from typing import List, Optional
 from sqlalchemy.orm import Session
-from fastapi import HTTPException, status
+from fastapi import HTTPException
 from repositories.customer_repository import CustomerRepository
 from repositories.project_repository import ProjectRepository
 from schemas.project import PaginatedProjectsResponseDTO, ProjectDTO, ProjectResponseDTO
@@ -82,6 +82,9 @@ class ProjectService(BaseService):
 
             return response_data
 
+
+        except HTTPException as http_exc:
+            raise http_exc
         except Exception as e:
             self.logger.error("An error occurred in create_project", {"error": str(e)})
             raise HTTPException(
@@ -126,6 +129,8 @@ class ProjectService(BaseService):
 
             return response_data
 
+        except HTTPException as http_exc:
+            raise http_exc
         except Exception as e:
             self.logger.error("An error occurred in get_project", {"error": str(e)})
             raise HTTPException(
@@ -179,6 +184,8 @@ class ProjectService(BaseService):
 
             return response_data
 
+        except HTTPException as http_exc:
+            raise http_exc
         except Exception as e:
             self.logger.error("An error occurred in update_project", {"error": str(e)})
             raise HTTPException(
@@ -270,9 +277,14 @@ class ProjectService(BaseService):
                 limit=limit,
             )
 
+
+        except HTTPException as http_exc:
+            raise http_exc
         except Exception as e:
             self.logger.error("An error occurred in list_projects_by_customer", {"error": str(e)})
             raise HTTPException(
                 status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
                 detail="An internal error occurred"
             )
+
+

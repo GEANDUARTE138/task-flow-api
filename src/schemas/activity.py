@@ -31,8 +31,10 @@ class ActivityDTO(BaseModel):
         None, description="Data de conclusão da atividade"
     )
 
-    model_config = ConfigDict(from_attributes=True)
-
+    model_config = ConfigDict(
+        from_attributes=True,
+        json_encoders={datetime: lambda v: v.isoformat()},
+    )
 
 class ActivityUpdateDTO(BaseModel):
     """
@@ -59,8 +61,10 @@ class ActivityUpdateDTO(BaseModel):
         description="Status da atividade (not_started, in_progress, completed, blocked)",
     )
 
-    model_config = ConfigDict(from_attributes=True)
-
+    model_config = ConfigDict(
+        from_attributes=True,
+        json_encoders={datetime: lambda v: v.isoformat()},
+    )
 
 class ActivityResponseDTO(BaseModel):
     """
@@ -80,5 +84,12 @@ class ActivityResponseDTO(BaseModel):
     project_key: str = Field(
         ..., description="Chave única do projeto relacionado à atividade"
     )
+    due_date: Optional[datetime] = Field(
+        None, description="The optional due date for the activity"
+    )
     description: str = Field(..., description="Descrição da atividade")
     status: str = Field(..., description="Status da atividade")
+    model_config = ConfigDict(
+        from_attributes=True,
+        json_encoders={datetime: lambda v: v.isoformat()},
+    )

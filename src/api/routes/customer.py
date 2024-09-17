@@ -19,7 +19,7 @@ router = APIRouter()
 
 @router.post(
     "/customer",
-    status_code=200,
+    status_code=201,
     response_model=CustomerResponseDTO,
     dependencies=[Depends(get_api_key)],
 )

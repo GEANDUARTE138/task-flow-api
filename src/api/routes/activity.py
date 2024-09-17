@@ -17,7 +17,7 @@ router = APIRouter()
 
 @router.post(
     "/activity",
-    status_code=200,
+    status_code=201,
     response_model=ActivityResponseDTO,
     dependencies=[Depends(get_api_key)],
 )
