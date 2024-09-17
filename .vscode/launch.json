@@ -1,0 +1,34 @@
+{
+  "version": "0.2.0",
+  "configurations": [
+    {
+      "name": "Python: FastAPI",
+      "type": "python",
+      "request": "launch",
+      "module": "uvicorn",
+      "args": [
+        "--app-dir",
+        "src",
+        "app:app",
+        "--reload"
+      ],
+      "subProcess": true,
+      "stopOnEntry": true,
+      "justMyCode": false
+    },
+    {
+      "name": "Python: Debug Tests",
+      "type": "python",
+      "request": "launch",
+      "program": "${workspaceFolder}/.venv/bin/python ${file}",
+      "console": "integratedTerminal",
+      "cwd": "${workspaceFolder}",
+      "env": {
+        "PYTEST_ADDOPTS": "--no-cov",
+        "PYTHONPATH": "${workspaceFolder}"
+      },
+      "subProcess": true,
+      "stopOnEntry": true
+    }
+  ]
+}

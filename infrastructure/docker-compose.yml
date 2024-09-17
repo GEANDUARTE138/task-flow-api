@@ -1,0 +1,17 @@
+version: "3.7"
+services:
+  task-flow-api_database_image:
+    image: mysql:8.0
+    container_name: "task-flow_database_container"
+    environment:
+      - MYSQL_ROOT_PASSWORD=my_root_pwd
+      - MYSQL_USER=my_user
+      - MYSQL_PASSWORD=my_pwd
+      - MYSQL_TCP_PORT=3306
+    ports:
+      - "3306:3306"
+    volumes:
+      - db_data:/var/lib/mysql
+
+volumes:
+  db_data:

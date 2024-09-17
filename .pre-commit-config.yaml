@@ -1,0 +1,23 @@
+repos:
+-   repo: https://github.com/psf/black
+    rev: 24.8.0
+    hooks:
+    - id: black
+      language_version: python3.12.6
+-   repo: https://github.com/pre-commit/pre-commit-hooks
+    rev: v2.4.0
+    hooks:
+    - id: check-ast
+    - id: check-byte-order-marker
+    - id: check-case-conflict
+    - id: check-docstring-first
+    - id: check-json
+    - id: check-merge-conflict
+    - id: check-toml
+    - id: check-xml
+    - id: check-yaml
+      args: ['--allow-multiple-documents']
+    - id: detect-private-key
+    - id: forbid-new-submodules
+    - id: pretty-format-json
+      args: ['--autofix', '--no-sort-keys']
