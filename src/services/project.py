@@ -9,7 +9,7 @@ Classes:
 from datetime import datetime
 from typing import List, Optional
 from sqlalchemy.orm import Session
-from fastapi import HTTPException
+from fastapi import HTTPException, status
 from repositories.customer_repository import CustomerRepository
 from repositories.project_repository import ProjectRepository
 from schemas.project import PaginatedProjectsResponseDTO, ProjectDTO, ProjectResponseDTO
@@ -283,7 +283,7 @@ class ProjectService(BaseService):
         except Exception as e:
             self.logger.error("An error occurred in list_projects_by_customer", {"error": str(e)})
             raise HTTPException(
-                status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
+                status_code=500,
                 detail="An internal error occurred"
             )
 

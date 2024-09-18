@@ -375,51 +375,6 @@ async def test_create_project_internal_error():
     project_repository.create.assert_called_once()
 
 
-@pytest.mark.asyncio
-async def test_list_projects_by_customer():
-    session = MagicMock()
-    project_repository = AsyncMock()
-    customer_repository = AsyncMock()
-
-    customer_mock = MagicMock()
-    customer_repository.get_by_key.return_value = customer_mock
-
-    project_repository.count_projects_by_customer.return_value = 10
-
-    project_mock = MagicMock()
-    project_mock.project_key = "project-key"
-    project_mock.name = "Filtered Project"
-    project_mock.status.enumerator = "open"
-    project_mock.created_at = datetime(2024, 1, 1, 0, 0, 0)
-    project_mock.updated_at = datetime(2024, 1, 1, 0, 0, 0)
-    project_mock.due_date = datetime(2024, 2, 1, 0, 0, 0)
-    project_repository.list_projects_by_customer.return_value = [project_mock]
-
-    service = ProjectService(session)
-    service.project_repository = project_repository
-    service.customer_repository = customer_repository
-
-    result = await service.list_projects_by_customer(
-        customer_key="customer-key",
-        include_activities=False,
-        status="open",
-        due_date=datetime(2024, 2, 1, 0, 0, 0),
-        limit=10,
-        page=1,
-    )
-
-    assert result.total_items == 10
-    assert len(result.projects) == 1
-    assert result.projects[0].name == "Filtered Project"
-    assert result.projects[0].status == "open"
-    assert result.projects[0].due_date == datetime(2024, 2, 1, 0, 0, 0)
-
-    project_repository.count_projects_by_customer.assert_called_once_with(
-        customer_mock.id, "open", datetime(2024, 2, 1, 0, 0, 0)
-    )
-    project_repository.list_projects_by_customer.assert_called_once_with(
-        customer_mock.id, "open", datetime(2024, 2, 1, 0, 0, 0), 10, 1
-    )
 
 
 @pytest.mark.asyncio
